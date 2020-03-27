@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= $(shell find . -name '*.c')
+SRCS	= $(shell find . -name '*.c' | grep -v main)
 
 OBJS	= $(SRCS:.c=.o)
 
