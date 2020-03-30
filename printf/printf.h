@@ -18,6 +18,45 @@
 # include <stdarg.h>
 # include "../libft/libft.h"
 
+typedef struct	s_arg
+{
+	int		flag_zero;
+	int		flag_minus;
+	int		mul;
+	int		width;
+	int		precision;
+	int		precision_mul;
+	int		length;
+	char	format;
+	t_list	**list;
+}				t_arg;
+
+
 int		ft_printf(const char *, ...);
+// parse str
+int		read_string(t_list **begin, const char *str, int i);
+
+char	*isolate_format(const char *str, int i);
+//int		read_conversion(t_list **begin, char *format, va_list ap);
+int		run_conversion(t_list **begin, char *format, va_list ap);
+t_arg	*init_params(t_list **begin, char *format); // mettre tous les params à 0 + adresse de la liste + lettre du format
+int		analyze_format(t_arg *params, char *format, va_list ap); // remplir les diff params en fonction des flags if len > 2
+// tableau de pointeurs sur fonction OU if et else if
+int		router(t_arg *params, va_list ap); // pour appeler la bonne fonction + les options ensuite
+
+char	*format_c(va_list ap); // return NULL en cas d'erreur
+char	*format_s(va_list ap); // return NULL en cas d'erreur
+char	*format_d(va_list ap); // return NULL en cas d'erreur
+char	*format_percent(void); // return NULL en cas d'erreur
+		//etc
+char	*flag_zero(t_arg *params, char *arg);
+char	*flag_minus(t_arg *params, char *arg);
+char	*flag_width(t_arg *params, char *arg);
+
+int		add_element_in_list(t_list **begin, char *str);
+
+// print and clear
+void	print_list(t_list *element);
+void	clear_string(void *str);
 
 #endif
