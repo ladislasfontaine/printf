@@ -2,7 +2,12 @@
 
 char	*format_s(va_list ap)
 {
-	return(ft_strdup(va_arg(ap, const char *)));
+	const char	*str;
+
+	str = va_arg(ap, const char *);
+	if (!str)
+		return(ft_strdup((const char *)"(null)"));
+	return(ft_strdup(str));
 }
 
 char	*format_c(va_list ap)
@@ -14,9 +19,15 @@ char	*format_c(va_list ap)
 	return(str);
 }
 
-char	*format_d(va_list ap)
+char	*format_d(t_arg *params, va_list ap)
 {
-	return(ft_itoa((int)va_arg(ap, int)));
+	int		n;
+
+	n = (int)va_arg(ap, int);
+	//ft_putnbr(n);
+	if (n < 0)
+		params->neg = 1;
+	return(ft_itoa(n));
 }
 
 char	*format_percent(void)

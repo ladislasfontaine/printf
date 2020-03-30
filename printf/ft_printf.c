@@ -2,31 +2,21 @@
 
 /*
 ** %[flags][width][.precision][length]specifier
-
-%
-
-** c (int) -> (unsigned char)
-** s (const char *) -> write until '\0'
-** p (void *) -> hexadecimal
-** d, i (int) -> signed decimal integer
-** u (unsigned int) converted into unsigned decimal
-** x, X (unsigned int) converted into unsigned hexadecimal
-** % write '%'
-** '-0.*' different flags to manage
-** minimal size
-*/
-/*
-int		router()
-{}
-
-// tableau avec les différentes fonctions pour les différents arguments
+** %c (int) -> (unsigned char)
+** %s (const char *) -> write until '\0'
+** %p (void *) -> hexadecimal
+** %d %i (int) -> signed decimal integer
+** %u (unsigned int) converted into unsigned decimal
+** %x %X (unsigned int) converted into unsigned hexadecimal
+** %% write '%'
 */
 
-void	print_list(t_list *element)
+void	print_list(t_list *element, int *r)
 {
 	while (element)
 	{
 		ft_putstr((char *)element->content);
+		*r += ft_strlen((const char *)element->content);
 		element = element->next;
 	}
 }
@@ -59,7 +49,8 @@ char	*isolate_format(const char *str, int i)
 
 	count = 1;
 	c = str[i + count];
-	while (c && !(c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' || c == 'u' || c == 'x' || c == 'X' || c == '%'))
+	while (c && !(c == 'c' || c == 's' || c == 'p' || c == 'd'
+	|| c == 'i' || c == 'u' || c == 'x' || c == 'X' || c == '%'))
 	{
 		count++;
 		c = str[i + count];
@@ -77,22 +68,7 @@ int		add_element_in_list(t_list **begin, char *str)
 	ft_lstadd_back(begin, new);
 	return (1);
 }
-/*
-int		read_conversion(t_list **begin, char *format, va_list ap)
-{
-	int		len;
-	char	*str;
 
-	len = ft_strlen(format);
-	if (len == 2 && format[1] == 's')
-	{
-		str = ft_strdup(va_arg(ap, const char *));
-		if (add_element_in_list(begin, str))
-			return (1);
-	}
-	return (0);
-}
-*/
 t_arg	*init_params(t_list **begin, char *format)
 {
 	t_arg	*new;
@@ -105,11 +81,33 @@ t_arg	*init_params(t_list **begin, char *format)
 	new->mul = 0;
 	new->width = 0;
 	new->precision = 0;
+	new->dot = 0;
 	new->precision_mul = 0;
 	new->length = 0;
+	new->neg = 0;
 	new->format = format[ft_strlen(format) - 1];
 	new->list = begin;
 	return (new);
+}
+
+int		update_params(t_arg *params, char c, int num)
+{
+	if (c == '0')
+		params->flag_zero = num;
+	else if (ft_isdigit(c))
+		params->width = num;
+	else if (c == '-')
+		params->flag_minus = num;
+	else if (c == '.')
+	{
+		params->dot = 1;
+		params->precision = num;
+	}
+	else if (c == '*')
+		params->mul = num;
+	else
+		return (0);
+	return (1);
 }
 
 int		analyze_format(t_arg *params, char *format, va_list ap)
@@ -118,7 +116,7 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 	int	num;
 
 	i = 1;
-	while (format[i])
+	while (format[i] && format[i] != params->format)
 	{
 		if (format[i] == '0' || format[i] == '-' || format[i] == '.')
 			if (format[i + 1] == '*')
@@ -130,28 +128,12 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 		else if (format[i] == '*')
 			num = (int)va_arg(ap, int);
 
-		// new function update_params(t_arg *params, char format[i], int num)
-		if (format[i] == '0')
-			params->flag_zero = num;
-		else if (ft_isdigit(format[i]))
-			params->width = num;
-		else if (format[i] == '-')
-			params->flag_minus = num;
-		else if (format[i] == '.')
-			params->precision = num;
-		else if (format[i] == '*')
-			params->mul = num;
-		else
-			return (0);
-
-		if (!num)
+		if (!update_params(params, format[i], num))
 			return (0);
 		if (format[i] == '*' || (format[i] >= '1' && format[i] <= '9'))
 			i += ft_numlen(num);
 		else
 			i += ft_numlen(num) + 1;
-		if (format[i] == params->format)
-			return (1);
 	}
 	return (1);
 }
@@ -170,31 +152,52 @@ int		run_conversion(t_list **begin, char *format, va_list ap)
 	return (1);
 }
 
+int		router_flags(t_arg *params, char **str)
+{
+	if (params->dot && params->precision == 0 && *str[0] == '0')
+		ft_strclr(*str);
+	if (params->precision > 0 && (params->format == 'd' || params->format == 'i') && params->neg)
+		*str = flag_zero_neg(params, *str);
+	if (params->precision > 0 && (params->format == 'd' || params->format == 'i'))
+		*str = flag_zero(params, *str);
+	if (params->dot && params->format == 's')
+		*str = flag_zero_str(params, *str);
+	if (params->width > 0 || params->mul > 0)
+		*str = flag_width(params, *str);
+	else if (params->flag_zero > 0 && params->neg)
+		*str = flag_zero_neg(params, *str);
+	else if (params->flag_zero > 0)
+		*str = flag_zero(params, *str);
+	else if (params->flag_minus > 0)
+		*str = flag_minus(params, *str);
+	return (1);
+}
+
 int		router(t_arg *params, va_list ap)
 {
 	char	*str;
 
-	// conversions
 	if (params->format == 's')
 		str = format_s(ap);
 	else if (params->format == 'd' || params->format == 'i')
-		str = format_d(ap);
+		str = format_d(params, ap);
 	else if (params->format == 'c')
 		str = format_c(ap);
 	else if (params->format == '%')
 		str = format_percent();
+	else if (params->format == 'u')
+		str = format_u(ap);
+	/*
+	else if (params->format == 'p')
+		str = format_p(ap);
+	else if (params->format == 'x')
+		str = format_x(ap);
+	else if (params->format == 'X')
+		str = format_X(ap);
+	*/
 	else
 		return (0);
-	// flags
-	if (params->precision > 0 && (params->format == 'd' || params->format == 'i'))
-		str = flag_zero(params, str);
-	if (params->width > 0 || params->mul > 0)
-		str = flag_width(params, str);
-	else if (params->flag_zero > 0)
-		str = flag_zero(params, str);
-	else if (params->flag_minus > 0)
-		str = flag_minus(params, str);
-
+	router_flags(params, &str);
 	if (add_element_in_list(params->list, str))
 			return (1);
 	return (0);
@@ -206,9 +209,8 @@ int		ft_printf(const char *str, ...)
 	va_list	args;
 	char	*format;
 	int		i;
+	int		result;
 
-	// check nombre d'arguments
-	// check validité des args %
 	begin = NULL;
 	i = 0;
 	va_start(args, str);
@@ -224,7 +226,8 @@ int		ft_printf(const char *str, ...)
 		}
 	}
 	va_end(args);
-	print_list(begin);
+	result = 0;
+	print_list(begin, &result);
 	ft_lstclear(&begin, &clear_string);
-	return (0);
+	return (result);
 }
