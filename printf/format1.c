@@ -24,7 +24,6 @@ char	*format_d(t_arg *params, va_list ap)
 	int		n;
 
 	n = (int)va_arg(ap, int);
-	//ft_putnbr(n);
 	if (n < 0)
 		params->neg = 1;
 	return(ft_itoa(n));

@@ -121,6 +121,11 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 		if (format[i] == '0' || format[i] == '-' || format[i] == '.')
 			if (format[i + 1] == '*')
 				num = (int)va_arg(ap, int);
+			else if (format[i] == '-' && format[i + 1] == '-')
+			{
+				i++;
+				continue ;
+			}
 			else
 				num = ft_atoi((const char *)&format[i + 1]);
 		else if (ft_isdigit(format[i]))
@@ -156,9 +161,9 @@ int		router_flags(t_arg *params, char **str)
 {
 	if (params->dot && params->precision == 0 && *str[0] == '0')
 		ft_strclr(*str);
-	if (params->precision > 0 && (params->format == 'd' || params->format == 'i') && params->neg)
+	if (params->precision > 0 && !(params->format == 'c' || params->format == 's' || params->format == '%') && params->neg)
 		*str = flag_zero_neg(params, *str);
-	if (params->precision > 0 && (params->format == 'd' || params->format == 'i'))
+	if (params->precision > 0 && !(params->format == 'c' || params->format == 's' || params->format == '%'))
 		*str = flag_zero(params, *str);
 	if (params->dot && params->format == 's')
 		*str = flag_zero_str(params, *str);
@@ -187,14 +192,12 @@ int		router(t_arg *params, va_list ap)
 		str = format_percent();
 	else if (params->format == 'u')
 		str = format_u(ap);
-	/*
-	else if (params->format == 'p')
-		str = format_p(ap);
 	else if (params->format == 'x')
 		str = format_x(ap);
 	else if (params->format == 'X')
 		str = format_X(ap);
-	*/
+	else if (params->format == 'p')
+		str = format_p(ap);
 	else
 		return (0);
 	router_flags(params, &str);

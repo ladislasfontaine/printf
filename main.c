@@ -3,7 +3,10 @@
 
 int		main(void)
 {
-	ft_printf("%.8s and %.32s\n", NULL, "hello there");
-	printf("%.8s and %.32s\n", NULL, "hello there");
+	int	n = 96;
+	//char *n = "b";
+
+	ft_printf("%x and %X AND %p\n", 153000, 0, &n);
+	printf("%x and %X AND %p\n", 153000, 0, &n);
 	return (0);
 }
