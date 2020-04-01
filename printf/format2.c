@@ -35,5 +35,6 @@ char	*format_p(va_list ap)
 		ft_strcpy(str, (const char *)"0x");
 		ft_strcat(str, (const char *)hex);
 	}
+	free(hex);
 	return (str);
 }

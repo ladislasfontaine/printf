@@ -170,9 +170,16 @@ int		run_conversion(t_list **begin, char *format, va_list ap)
 	params = init_params(begin, format);
 	if (ft_strlen(format) > 2)
 		if (!analyze_format(params, format, ap))
+		{
+			free(params);
 			return (0);
+		}
 	if (!router(params, ap))
+	{
+		free(params);
 		return (0);
+	}
+	free(params);
 	return (1);
 }
 
