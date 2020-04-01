@@ -114,10 +114,14 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 {
 	int	i;
 	int	num;
+	int	zeroes;
 
+	zeroes = 0;
 	i = 1;
 	while (format[i] && format[i] != params->format)
 	{
+		while (format[i + 1 + zeroes] && format[i + 1 + zeroes] == '0' && !(format[i] >= '1' && format[i] <= '9'))
+			zeroes++;
 		if (format[i] == '0' || format[i] == '-' || format[i] == '.')
 			if (format[i + 1] == '*')
 				num = (int)va_arg(ap, int);
@@ -126,19 +130,26 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 				i++;
 				continue ;
 			}
-			else
+			else if (ft_isdigit(format[i + 1]) || format[i] == '.')
 				num = ft_atoi((const char *)&format[i + 1]);
+			else
+			{
+				i++;
+				continue ;
+			}
 		else if (ft_isdigit(format[i]))
 			num = ft_atoi((const char *)&format[i]);
 		else if (format[i] == '*')
 			num = (int)va_arg(ap, int);
+		else
+			return (0);
 
 		if (!update_params(params, format[i], num))
 			return (0);
 		if (format[i] == '*' || (format[i] >= '1' && format[i] <= '9'))
-			i += ft_numlen(num);
+			i += ft_numlen(num) + zeroes;
 		else
-			i += ft_numlen(num) + 1;
+			i += ft_numlen(num) + 1 + zeroes;
 	}
 	return (1);
 }
