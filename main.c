@@ -4,9 +4,8 @@
 int		main(void)
 {
 	int	n = 96;
-	//char *n = "b";
 
-	ft_printf("%x and %X AND %p\n", 153000, 0, &n);
-	printf("%x and %X AND %p\n", 153000, 0, &n);
+	ft_printf("%06.5i and %X AND %p\n", 34, 0, &n);
+	printf("%06.5i and %X AND %p\n", 34, 0, &n);
 	return (0);
 }

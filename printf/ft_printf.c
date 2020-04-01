@@ -110,6 +110,11 @@ int		update_params(t_arg *params, char c, int num)
 		params->mul = num;
 	else
 		return (0);
+	if (params->dot && params->flag_zero > params->precision)
+	{
+		params->width = params->flag_zero;
+		params->flag_zero = 0;
+	}
 	return (1);
 }
 
