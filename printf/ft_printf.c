@@ -15,8 +15,10 @@ void	print_list(t_list *element, int *r)
 {
 	while (element)
 	{
-		ft_putstr((char *)element->content);
-		*r += ft_strlen((const char *)element->content);
+		if (element->size == 0)
+			element->size = ft_strlen((const char *)element->content);
+		ft_putstrn((char *)element->content, element->size);
+		*r += element->size;
 		element = element->next;
 	}
 }
@@ -58,13 +60,14 @@ char	*isolate_format(const char *str, int i)
 	return (ft_substr(str, i, count + 1));
 }
 
-int		add_element_in_list(t_list **begin, char *str)
+int		add_element_in_list(t_list **begin, char *str, int n)
 {
 	t_list	*new;
 
 	new = ft_lstnew((void *)str);
 	if (!new)
 		return (0);
+	new->size = n;
 	ft_lstadd_back(begin, new);
 	return (1);
 }
@@ -198,7 +201,7 @@ int		router(t_arg *params, va_list ap)
 	else if (params->format == 'd' || params->format == 'i')
 		str = format_d(params, ap);
 	else if (params->format == 'c')
-		str = format_c(ap);
+		str = format_c(params, ap);
 	else if (params->format == '%')
 		str = format_percent();
 	else if (params->format == 'u')
@@ -212,7 +215,7 @@ int		router(t_arg *params, va_list ap)
 	else
 		return (0);
 	router_flags(params, &str);
-	if (add_element_in_list(params->list, str))
+	if (add_element_in_list(params->list, str, params->length))
 			return (1);
 	return (0);
 }

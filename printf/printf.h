@@ -48,7 +48,7 @@ int		update_params(t_arg *params, char c, int num);
 int		router(t_arg *params, va_list ap); // pour appeler la bonne fonction + les options ensuite
 int		router_flags(t_arg *params, char **str);
 
-char	*format_c(va_list ap); // return NULL en cas d'erreur
+char	*format_c(t_arg *params, va_list ap);
 char	*format_s(va_list ap);
 char	*format_d(t_arg *params, va_list ap);
 char	*format_u(va_list ap);
@@ -63,7 +63,7 @@ char	*flag_zero_str(t_arg *params, char *arg);
 char	*flag_minus(t_arg *params, char *arg);
 char	*flag_width(t_arg *params, char *arg);
 
-int		add_element_in_list(t_list **begin, char *str);
+int		add_element_in_list(t_list **begin, char *str, int n);
 
 // print and clear
 void	print_list(t_list *element, int *r);
