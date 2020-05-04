@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/02 16:52:57 by lafontai          #+#    #+#             */
+/*   Updated: 2020/05/04 19:04:26 by lafontai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "printf.h"
 
 /*
@@ -128,7 +140,8 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 	i = 1;
 	while (format[i] && format[i] != params->format)
 	{
-		while (format[i + 1 + zeroes] && format[i + 1 + zeroes] == '0' && !(format[i] >= '1' && format[i] <= '9'))
+		while (format[i + 1 + zeroes] && format[i + 1 + zeroes] == '0'
+				&& !(format[i] >= '1' && format[i] <= '9'))
 			zeroes++;
 		if (format[i] == '0' || format[i] == '-' || format[i] == '.')
 			if (format[i + 1] == '*')
@@ -151,7 +164,6 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 			num = (int)va_arg(ap, int);
 		else
 			return (0);
-
 		if (!update_params(params, format[i], num))
 			return (0);
 		if (format[i] == '*' || (format[i] >= '1' && format[i] <= '9'))
@@ -161,7 +173,6 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 	}
 	return (1);
 }
-
 
 int		run_conversion(t_list **begin, char *format, va_list ap)
 {
@@ -187,9 +198,11 @@ int		router_flags(t_arg *params, char **str)
 {
 	if (params->dot && params->precision == 0 && *str[0] == '0')
 		ft_strclr(*str);
-	if (params->precision > 0 && !(params->format == 'c' || params->format == 's' || params->format == '%') && params->neg)
+	if (params->precision > 0 && !(params->format == 'c' ||
+		params->format == 's' || params->format == '%') && params->neg)
 		*str = flag_zero_neg(params, *str);
-	if (params->precision > 0 && !(params->format == 'c' || params->format == 's' || params->format == '%'))
+	if (params->precision > 0 && !(params->format == 'c' ||
+		params->format == 's' || params->format == '%'))
 		*str = flag_zero(params, *str);
 	if (params->dot && params->format == 's')
 		*str = flag_zero_str(params, *str);
@@ -221,14 +234,14 @@ int		router(t_arg *params, va_list ap)
 	else if (params->format == 'x')
 		str = format_x(ap);
 	else if (params->format == 'X')
-		str = format_X(ap);
+		str = format_x_maj(ap);
 	else if (params->format == 'p')
 		str = format_p(ap);
 	else
 		return (0);
 	router_flags(params, &str);
 	if (add_element_in_list(params->list, str, params->length))
-			return (1);
+		return (1);
 	return (0);
 }
 

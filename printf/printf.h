@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printf.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/27 10:00:53 by marvin            #+#    #+#             */
-/*   Updated: 2020/03/27 10:06:44 by marvin           ###   ########.fr       */
+/*   Created: 2020/03/27 10:00:53 by lafontai          #+#    #+#             */
+/*   Updated: 2020/05/04 19:02:43 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,40 +33,34 @@ typedef struct	s_arg
 	t_list	**list;
 }				t_arg;
 
+int				ft_printf(const char *str, ...);
+int				read_string(t_list **begin, const char *str, int i);
+char			*isolate_format(const char *str, int i);
+int				run_conversion(t_list **begin, char *format, va_list ap);
+t_arg			*init_params(t_list **begin, char *format);
+int				analyze_format(t_arg *params, char *format, va_list ap);
+int				update_params(t_arg *params, char c, int num);
 
-int		ft_printf(const char *, ...);
-// parse str
-int		read_string(t_list **begin, const char *str, int i);
+int				router(t_arg *params, va_list ap);
+int				router_flags(t_arg *params, char **str);
 
-char	*isolate_format(const char *str, int i);
-//int		read_conversion(t_list **begin, char *format, va_list ap);
-int		run_conversion(t_list **begin, char *format, va_list ap);
-t_arg	*init_params(t_list **begin, char *format); // mettre tous les params à 0 + adresse de la liste + lettre du format
-int		analyze_format(t_arg *params, char *format, va_list ap); // remplir les diff params en fonction des flags if len > 2
-int		update_params(t_arg *params, char c, int num);
-// tableau de pointeurs sur fonction OU if et else if
-int		router(t_arg *params, va_list ap); // pour appeler la bonne fonction + les options ensuite
-int		router_flags(t_arg *params, char **str);
+char			*format_c(t_arg *params, va_list ap);
+char			*format_s(va_list ap);
+char			*format_d(t_arg *params, va_list ap);
+char			*format_u(va_list ap);
+char			*format_p(va_list ap);
+char			*format_x(va_list ap);
+char			*format_x_maj(va_list ap);
+char			*format_percent(void);
 
-char	*format_c(t_arg *params, va_list ap);
-char	*format_s(va_list ap);
-char	*format_d(t_arg *params, va_list ap);
-char	*format_u(va_list ap);
-char	*format_p(va_list ap);
-char	*format_x(va_list ap);
-char	*format_X(va_list ap);
-char	*format_percent(void);
-		//etc
-char	*flag_zero(t_arg *params, char *arg);
-char	*flag_zero_neg(t_arg *params, char *arg);
-char	*flag_zero_str(t_arg *params, char *arg);
-char	*flag_minus(t_arg *params, char *arg);
-char	*flag_width(t_arg *params, char *arg);
+char			*flag_zero(t_arg *params, char *arg);
+char			*flag_zero_neg(t_arg *params, char *arg);
+char			*flag_zero_str(t_arg *params, char *arg);
+char			*flag_minus(t_arg *params, char *arg);
+char			*flag_width(t_arg *params, char *arg);
 
-int		add_element_in_list(t_list **begin, char *str, int n);
-
-// print and clear
-void	print_list(t_list *element, int *r);
-void	clear_string(void *str);
+int				add_element_in_list(t_list **begin, char *str, int n);
+void			print_list(t_list *element, int *r);
+void			clear_string(void *str);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flags.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/02 16:52:16 by lafontai          #+#    #+#             */
+/*   Updated: 2020/05/04 19:06:22 by lafontai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "printf.h"
 
 char	*flag_zero(t_arg *params, char *arg)
@@ -7,7 +19,8 @@ char	*flag_zero(t_arg *params, char *arg)
 	int		flag;
 	char	*new;
 
-	flag = (params->flag_zero > params->precision) ? params->flag_zero : params->precision;
+	flag = (params->flag_zero > params->precision) ?
+		params->flag_zero : params->precision;
 	diff = flag - ft_strlen(arg);
 	if (diff > 0)
 	{
@@ -33,7 +46,8 @@ char	*flag_zero_neg(t_arg *params, char *arg)
 	int		flag;
 	char	*new;
 
-	flag = (params->flag_zero > params->precision) ? params->flag_zero : params->precision + 1;
+	flag = (params->flag_zero > params->precision) ?
+		params->flag_zero : params->precision + 1;
 	diff = flag - ft_strlen(arg);
 	if (diff > 0)
 	{
