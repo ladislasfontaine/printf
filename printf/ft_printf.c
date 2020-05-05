@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:57 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/05 11:50:31 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 14:53:58 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,27 +141,23 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 	int	zeroes;
 	int	star;
 
-	zeroes = 0;
 	i = 1;
 	while (format[i] && format[i] != params->format)
 	{
+		zeroes = 0;
 		star = 0;
-		while (format[i + 1 + zeroes] && format[i + 1 + zeroes] == '0'
-				&& !(format[i] >= '1' && format[i] <= '9'))
-			zeroes++;
 		if (format[i] == '0' || format[i] == '-' || format[i] == '.')
 			if (format[i + 1] == '*')
 			{
 				num = (int)va_arg(ap, int);
 				star = 1;
 			}
-			else if (format[i] == '-' && format[i + 1] == '-')
-			{
-				i++;
-				continue ;
-			}
 			else if (ft_isdigit(format[i + 1]) || format[i] == '.')
+			{
 				num = ft_atoi((const char *)&format[i + 1]);
+				while (num != 0 && format[i + 1 + zeroes] && format[i + 1 + zeroes] == '0')
+					zeroes++;
+			}
 			else
 			{
 				i++;
@@ -181,6 +177,8 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 			i += ft_numlen(num) + zeroes;
 		else if (star)
 			i += 2 + zeroes;
+		else if (format[i] == '.' && !ft_isdigit(format[i + 1]))
+			i += 1 + zeroes;
 		else
 			i += ft_numlen(num) + 1 + zeroes;
 	}
