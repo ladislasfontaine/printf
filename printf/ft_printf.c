@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:57 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/04 19:04:26 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 11:50:31 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,11 @@ t_arg	*init_params(t_list **begin, char *format)
 
 int		update_params(t_arg *params, char c, int num)
 {
-	if (c == '0')
+	if (num < 0 && (c == '*' || c == '0' || c == '-'))
+		params->flag_minus = -num;
+	else if (num < 0)
+		return (1);
+	else if (c == '0')
 		params->flag_zero = num;
 	else if (ft_isdigit(c))
 		params->width = num;
@@ -135,17 +139,22 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 	int	i;
 	int	num;
 	int	zeroes;
+	int	star;
 
 	zeroes = 0;
 	i = 1;
 	while (format[i] && format[i] != params->format)
 	{
+		star = 0;
 		while (format[i + 1 + zeroes] && format[i + 1 + zeroes] == '0'
 				&& !(format[i] >= '1' && format[i] <= '9'))
 			zeroes++;
 		if (format[i] == '0' || format[i] == '-' || format[i] == '.')
 			if (format[i + 1] == '*')
+			{
 				num = (int)va_arg(ap, int);
+				star = 1;
+			}
 			else if (format[i] == '-' && format[i + 1] == '-')
 			{
 				i++;
@@ -166,8 +175,12 @@ int		analyze_format(t_arg *params, char *format, va_list ap)
 			return (0);
 		if (!update_params(params, format[i], num))
 			return (0);
-		if (format[i] == '*' || (format[i] >= '1' && format[i] <= '9'))
+		if (format[i] == '*')
+			i += 1 + zeroes;
+		else if (format[i] >= '1' && format[i] <= '9')
 			i += ft_numlen(num) + zeroes;
+		else if (star)
+			i += 2 + zeroes;
 		else
 			i += ft_numlen(num) + 1 + zeroes;
 	}
@@ -196,7 +209,7 @@ int		run_conversion(t_list **begin, char *format, va_list ap)
 
 int		router_flags(t_arg *params, char **str)
 {
-	if (params->dot && params->precision == 0 && *str[0] == '0')
+	if (params->dot && params->precision == 0 && *str[0] == '0' && ft_strlen(*str) == 1)
 		ft_strclr(*str);
 	if (params->precision > 0 && !(params->format == 'c' ||
 		params->format == 's' || params->format == '%') && params->neg)
