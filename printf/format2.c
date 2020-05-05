@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:45 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/04 19:18:33 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 16:45:54 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*format_x_maj(va_list ap)
 	return (ft_itohex((unsigned int)va_arg(ap, int), "0123456789ABCDEF"));
 }
 
-char	*format_p(va_list ap)
+char	*format_p(t_arg *params, va_list ap)
 {
 	unsigned long	addr;
 	char			*str;
@@ -38,7 +38,9 @@ char	*format_p(va_list ap)
 
 	addr = va_arg(ap, unsigned long);
 	hex = ft_ultohex(addr, "0123456789abcdef");
-	if (!addr)
+	if (!addr && params->dot)
+		str = ft_strdup((const char *)"0x");
+	else if (!addr)
 		str = ft_strdup((const char *)"0x0");
 	else
 	{

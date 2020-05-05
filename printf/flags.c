@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:16 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/04 19:06:22 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 16:59:39 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,4 +144,24 @@ char	*flag_width(t_arg *params, char *arg)
 		return (new);
 	}
 	return (arg);
+}
+
+// A FAIRE + prévoir la condition
+char	*flag_zero_hex(t_arg *params, char *arg)
+{
+	int		diff;
+	size_t	max_len;
+	char	*new;
+
+	max_len = params->precision;
+	diff = max_len - ft_strlen(arg);
+	if (diff < 0)
+	{
+		new = ft_strnew(max_len);
+		ft_strncpy(new, (const char *)arg, max_len);
+		free(arg);
+		return (new);
+	}
+	else
+		return (arg);
 }

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:57 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/05 14:53:58 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 16:59:33 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ int		router(t_arg *params, va_list ap)
 	else if (params->format == 'X')
 		str = format_x_maj(ap);
 	else if (params->format == 'p')
-		str = format_p(ap);
+		str = format_p(params, ap);
 	else
 		return (0);
 	router_flags(params, &str);
@@ -256,6 +256,7 @@ int		router(t_arg *params, va_list ap)
 	return (0);
 }
 
+// gérer si juste un %
 int		ft_printf(const char *str, ...)
 {
 	t_list	*begin;

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:05 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/05 09:24:10 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 16:54:08 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 
 int		main(void)
 {
-	int	n = 96;
+	//int	n = 96;
 
-	ft_printf("%06.5i and %X AND %p\n", 34, 0, &n);
-	printf("%06.5i and %X AND %p\n", 34, 0, &n);
+	ft_printf("%");
 	return (0);
 }

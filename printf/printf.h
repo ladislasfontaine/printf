@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 10:00:53 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/04 19:02:43 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 16:56:38 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char			*format_c(t_arg *params, va_list ap);
 char			*format_s(va_list ap);
 char			*format_d(t_arg *params, va_list ap);
 char			*format_u(va_list ap);
-char			*format_p(va_list ap);
+char			*format_p(t_arg *params, va_list ap);
 char			*format_x(va_list ap);
 char			*format_x_maj(va_list ap);
 char			*format_percent(void);
@@ -56,6 +56,7 @@ char			*format_percent(void);
 char			*flag_zero(t_arg *params, char *arg);
 char			*flag_zero_neg(t_arg *params, char *arg);
 char			*flag_zero_str(t_arg *params, char *arg);
+char			*flag_zero_hex(t_arg *params, char *arg);
 char			*flag_minus(t_arg *params, char *arg);
 char			*flag_width(t_arg *params, char *arg);
 
