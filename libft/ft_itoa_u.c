@@ -1,27 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa_u.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/05 08:40:56 by lafontai          #+#    #+#             */
+/*   Updated: 2020/05/05 09:19:42 by lafontai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-static int	num_len(unsigned int n)
-{
-	int	len;
-	int	neg;
-
-	len = 1;
-	neg = 0;
-	if (n < 0)
-	{
-		neg = 1;
-		len++;
-		n = -n;
-	}
-	while (n > 9)
-	{
-		n = n / 10;
-		len++;
-	}
-	return (len);
-}
-
-char	*ft_itoa_u(unsigned int n)
+char		*ft_itoa_u(unsigned int n)
 {
 	char			*str;
 	int				neg;
@@ -29,9 +20,8 @@ char	*ft_itoa_u(unsigned int n)
 	unsigned int	num;
 
 	num = n;
-	len = num_len(num);
-	str = ft_strnew(len);
-	if (!str)
+	len = ft_numlen(num);
+	if (!(str = ft_strnew(len)))
 		return (NULL);
 	neg = 0;
 	if (num < 0)

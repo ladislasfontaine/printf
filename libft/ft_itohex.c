@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itohex.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/05 08:40:35 by lafontai          #+#    #+#             */
+/*   Updated: 2020/05/05 08:41:39 by lafontai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static int	hex_len(unsigned int n)
@@ -13,7 +25,7 @@ static int	hex_len(unsigned int n)
 	return (len);
 }
 
-char	*ft_itohex(unsigned int n, char *base)
+char		*ft_itohex(unsigned int n, char *base)
 {
 	char			*str;
 	int				len;

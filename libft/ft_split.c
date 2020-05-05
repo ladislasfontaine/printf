@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/27 17:05:38 by lafontai          #+#    #+#             */
+/*   Updated: 2020/05/04 16:32:18 by lafontai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static int	w_count(const char *str, char c)
@@ -9,9 +21,9 @@ static int	w_count(const char *str, char c)
 	i = 0;
 	if (str[0] != c)
 		count++;
-	while (str[i + 1])
+	while (str[i] && str[i + 1])
 	{
-		if (str[i] == c && str[i + 1] != c && i != 0)
+		if (str[i] == c && str[i + 1] != c)
 			count++;
 		i++;
 	}

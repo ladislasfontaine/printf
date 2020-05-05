@@ -3,14 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lafontai <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/03/27 09:51:37 by marvin           ###   ########.fr        #
+#    Updated: 2020/05/05 09:02:18 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= $(shell find . -name '*.c' | grep -v main | grep -v pft)
+SRCS	= $(addprefix $(FOLDER), flags.c format1.c format2.c ft_printf.c)
+
+FOLDER	= printf/
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -29,6 +31,8 @@ endif
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
+			cd libft && make bonus
+			cp libft/libft.a ./$(NAME)
 			ar rcs $(NAME) $(OBJS)
 
 bonus:		$(NAME)
@@ -37,9 +41,11 @@ bonus:		$(NAME)
 			$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
+			cd libft && make clean
 			$(RM) $(OBJS)
 
 fclean:		clean
+			$(RM) libft/libft.a
 			$(RM) $(NAME)
 
 re:			fclean all

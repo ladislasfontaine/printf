@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/27 17:02:09 by lafontai          #+#    #+#             */
+/*   Updated: 2020/04/27 17:14:12 by lafontai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static int	num_len(long n)
@@ -21,7 +33,7 @@ static int	num_len(long n)
 	return (len);
 }
 
-char	*ft_itoa(int n)
+char		*ft_itoa(int n)
 {
 	char	*str;
 	int		neg;
@@ -38,12 +50,11 @@ char	*ft_itoa(int n)
 	{
 		neg = 1;
 		num = -num;
+		str[0] = '-';
 	}
 	while (len > 0)
 	{
-		if (len == 1 && neg)
-			str[0] = '-';
-		else
+		if (!(len == 1 && neg))
 			str[len - 1] = (num % 10) + 48;
 		num = num / 10;
 		len--;
