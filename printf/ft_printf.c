@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:57 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/05 16:59:33 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:28:46 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,12 +190,12 @@ int		run_conversion(t_list **begin, char *format, va_list ap)
 	t_arg	*params;
 
 	params = init_params(begin, format);
-	if (ft_strlen(format) > 2)
-		if (!analyze_format(params, format, ap))
-		{
-			free(params);
-			return (0);
-		}
+	if (ft_strlen(format) < 2 ||
+		(ft_strlen(format) > 2 && !analyze_format(params, format, ap)))
+	{
+		free(params);
+		return (0);
+	}
 	if (!router(params, ap))
 	{
 		free(params);
@@ -210,9 +210,11 @@ int		router_flags(t_arg *params, char **str)
 	if (params->dot && params->precision == 0 && *str[0] == '0' && ft_strlen(*str) == 1)
 		ft_strclr(*str);
 	if (params->precision > 0 && !(params->format == 'c' ||
-		params->format == 's' || params->format == '%') && params->neg)
+		params->format == 's' || params->format == '%' || params->format == 'p') && params->neg)
 		*str = flag_zero_neg(params, *str);
-	if (params->precision > 0 && !(params->format == 'c' ||
+	else if (params->precision > 0 && params->format == 'p')
+		*str = flag_zero_hex(params, *str);
+	else if (params->precision > 0 && !(params->format == 'c' ||
 		params->format == 's' || params->format == '%'))
 		*str = flag_zero(params, *str);
 	if (params->dot && params->format == 's')
@@ -256,7 +258,6 @@ int		router(t_arg *params, va_list ap)
 	return (0);
 }
 
-// gérer si juste un %
 int		ft_printf(const char *str, ...)
 {
 	t_list	*begin;

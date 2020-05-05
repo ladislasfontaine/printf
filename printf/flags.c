@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:16 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/05 16:59:39 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:34:26 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,15 +150,24 @@ char	*flag_width(t_arg *params, char *arg)
 char	*flag_zero_hex(t_arg *params, char *arg)
 {
 	int		diff;
-	size_t	max_len;
+	int		i;
+	size_t	min_len;
 	char	*new;
 
-	max_len = params->precision;
-	diff = max_len - ft_strlen(arg);
-	if (diff < 0)
+	min_len = params->precision + 2;
+	diff = min_len - ft_strlen(arg);
+	if (diff > 0)
 	{
-		new = ft_strnew(max_len);
-		ft_strncpy(new, (const char *)arg, max_len);
+		new = ft_strnew(min_len);
+		new[0] = '0';
+		new[1] = 'x';
+		i = 2;
+		while (i < diff + 2)
+		{
+			new[i] = '0';
+			i++;
+		}
+		ft_strcat(new, (const char *)(arg + 2));
 		free(arg);
 		return (new);
 	}
