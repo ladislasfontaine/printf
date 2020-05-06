@@ -6,11 +6,18 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/05 09:02:18 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/06 08:13:58 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= $(addprefix $(FOLDER), flags.c format1.c format2.c ft_printf.c)
+SRCS	= $(addprefix $(FOLDER), \
+			flag1.c \
+			flag2.c \
+			format1.c \
+			format2.c \
+			ft_printf.c \
+			list.c \
+			parse.c)
 
 FOLDER	= printf/
 

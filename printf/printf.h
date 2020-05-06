@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 10:00:53 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/05 16:56:38 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/06 08:10:06 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,12 @@ typedef struct	s_arg
 }				t_arg;
 
 int				ft_printf(const char *str, ...);
-int				read_string(t_list **begin, const char *str, int i);
-char			*isolate_format(const char *str, int i);
 int				run_conversion(t_list **begin, char *format, va_list ap);
-t_arg			*init_params(t_list **begin, char *format);
 int				analyze_format(t_arg *params, char *format, va_list ap);
-int				update_params(t_arg *params, char c, int num);
 
+char			*isolate_format(const char *str, int i);
+t_arg			*init_params(t_list **begin, char *format);
+int				update_params(t_arg *params, char c, int num);
 int				router(t_arg *params, va_list ap);
 int				router_flags(t_arg *params, char **str);
 
@@ -62,6 +61,7 @@ char			*flag_width(t_arg *params, char *arg);
 
 int				add_element_in_list(t_list **begin, char *str, int n);
 void			print_list(t_list *element, int *r);
+int				read_string(t_list **begin, const char *str, int i);
 void			clear_string(void *str);
 
 #endif

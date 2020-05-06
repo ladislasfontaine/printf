@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flags.c                                            :+:      :+:    :+:   */
+/*   flag1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:16 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/05 19:34:26 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/06 08:01:58 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,67 +86,6 @@ char	*flag_zero_str(t_arg *params, char *arg)
 		return (arg);
 }
 
-char	*flag_minus(t_arg *params, char *arg)
-{
-	int		i;
-	int		diff;
-	int		len;
-	char	*new;
-
-	len = params->length ? params->length : ft_strlen(arg);
-	diff = params->flag_minus - len;
-	if (diff > 0)
-	{
-		i = len;
-		new = ft_strnew(params->flag_minus);
-		ft_strcpy(new, (const char *)arg);
-		if (params->format == 'c' && arg[0] == '\0')
-			new[0] = '\0';
-		free(arg);
-		while (i < params->flag_minus)
-		{
-			new[i] = ' ';
-			i++;
-		}
-		if (params->format == 'c')
-			params->length += diff;
-		return (new);
-	}
-	return (arg);
-}
-
-char	*flag_width(t_arg *params, char *arg)
-{
-	int		i;
-	int		diff;
-	int		flag;
-	int		len;
-	char	*new;
-
-	len = params->length ? params->length : ft_strlen(arg);
-	flag = (params->width > 0) ? params->width : params->mul;
-	diff = flag - len;
-	if (diff > 0)
-	{
-		i = 0;
-		new = ft_strnew(flag);
-		while (i < diff)
-		{
-			new[i] = ' ';
-			i++;
-		}
-		ft_strcat(new, (const char *)arg);
-		if (params->format == 'c' && arg[0] == '\0')
-			new[i] = '\0';
-		free(arg);
-		if (params->format == 'c')
-			params->length += diff;
-		return (new);
-	}
-	return (arg);
-}
-
-// A FAIRE + prévoir la condition
 char	*flag_zero_hex(t_arg *params, char *arg)
 {
 	int		diff;
