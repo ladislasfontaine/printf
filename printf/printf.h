@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 10:00:53 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/06 08:10:06 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/06 09:45:25 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ char			*flag_zero_str(t_arg *params, char *arg);
 char			*flag_zero_hex(t_arg *params, char *arg);
 char			*flag_minus(t_arg *params, char *arg);
 char			*flag_width(t_arg *params, char *arg);
+
+int				utils_one(t_arg *params, char *format, int *i);
+int				utils_two(t_arg *params, char *format, va_list ap, int *i);
+int				utils_three(t_arg *params, char *format, int *i);
+int				utils_four(t_arg *params, char *format, va_list ap, int *i);
 
 int				add_element_in_list(t_list **begin, char *str, int n);
 void			print_list(t_list *element, int *r);

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:52:57 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/06 08:11:04 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/06 09:45:55 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,29 @@
 int		analyze_format(t_arg *params, char *format, va_list ap)
 {
 	int	i;
-	int	num;
-	int	zeroes;
-	int	star;
 
 	i = 1;
 	while (format[i] && format[i] != params->format)
-	{
-		zeroes = 0;
-		star = 0;
 		if (format[i] == '0' || format[i] == '-' || format[i] == '.')
-			if (format[i + 1] == '*')
-			{
-				num = (int)va_arg(ap, int);
-				star = 1;
-			}
-			else if (ft_isdigit(format[i + 1]) || format[i] == '.')
-			{
-				num = ft_atoi((const char *)&format[i + 1]);
-				while (num != 0 && format[i + 1 + zeroes] &&
-						format[i + 1 + zeroes] == '0')
-					zeroes++;
-			}
-			else
-			{
-				i++;
+			if (format[i + 1] == '*' && utils_two(params, format, ap, &i))
 				continue ;
-			}
+			else if ((ft_isdigit(format[i + 1]) || format[i] == '.') &&
+					utils_one(params, format, &i))
+				continue ;
+			else
+				i++;
 		else if (ft_isdigit(format[i]))
-			num = ft_atoi((const char *)&format[i]);
+		{
+			if (!utils_three(params, format, &i))
+				return (0);
+		}
 		else if (format[i] == '*')
-			num = (int)va_arg(ap, int);
+		{
+			if (!utils_four(params, format, ap, &i))
+				return (0);
+		}
 		else
 			return (0);
-		if (!update_params(params, format[i], num))
-			return (0);
-		if (format[i] == '*')
-			i += 1 + zeroes;
-		else if (format[i] >= '1' && format[i] <= '9')
-			i += ft_numlen(num) + zeroes;
-		else if (star)
-			i += 2 + zeroes;
-		else if (format[i] == '.' && !ft_isdigit(format[i + 1]))
-			i += 1 + zeroes;
-		else
-			i += ft_numlen(num) + 1 + zeroes;
-	}
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/06 08:13:58 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/06 09:44:36 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS	= $(addprefix $(FOLDER), \
 			format2.c \
 			ft_printf.c \
 			list.c \
-			parse.c)
+			parse.c \
+			utils.c)
 
 FOLDER	= printf/
 
