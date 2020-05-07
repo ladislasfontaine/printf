@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 08:07:41 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/06 08:09:48 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/07 14:32:07 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,20 @@ int		update_params(t_arg *params, char c, int num)
 		params->width = num;
 	else if (c == '-')
 		params->flag_minus = num;
-	else if (c == '.')
-	{
-		params->dot = 1;
+	else if (c == '.' && (params->dot = 1))
 		params->precision = num;
-	}
 	else if (c == '*')
 		params->mul = num;
 	else
 		return (0);
-	if (params->dot && params->flag_zero > params->precision)
+	if (params->dot && params->flag_zero > params->precision &&
+		params->format != '%')
 	{
 		params->width = params->flag_zero;
 		params->flag_zero = 0;
 	}
+	if (params->format == '%' && params->flag_zero > 0 && !(params->dot = 0))
+		params->precision = 0;
 	return (1);
 }
 
